@@ -1,6 +1,6 @@
 {
-  "name": "eztvapi",
-  "version": "1.0.2",
+  "name": "eztv.ag",
+  "version": "1.0.0",
   "description": "A simple html parsing api for EZTV.ag",
   "main": "eztv.js",
   "scripts": {},
