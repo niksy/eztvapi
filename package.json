@@ -1,0 +1,32 @@
+{
+  "name": "eztvapi",
+  "version": "1.0.2",
+  "description": "A simple html parsing api for EZTV.ag",
+  "main": "eztv.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatrickE94/eztvapi.git"
+  },
+  "keywords": [
+    "eztv",
+    "torrent",
+    "api"
+  ],
+  "author": "Patrick Engström",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PatrickE94/eztvapi/issues"
+  },
+  "homepage": "https://github.com/PatrickE94/eztvapi#readme",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "got": "^5.0.0",
+    "magnet-uri": "^5.0.0",
+    "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
+  }
+}
