@@ -59,7 +59,7 @@ function grabTorrents(data) {
       magnet: el(".magnet").attr('href'),
       hash: mag.infoHash,
       size: size,
-      seeds: Number(seeds.text())
+      seeds: Number(seeds.text().replace(/\D/, ''))
     });
   });
   return torrents;
