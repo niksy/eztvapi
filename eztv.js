@@ -2,6 +2,7 @@ var got = require('got');
 var cheerio = require('cheerio');
 var Q = require('q');
 var magnet = require('magnet-uri');
+var date = require('date.js');
 
 var base = "http://eztv.ag";
 
@@ -16,6 +17,58 @@ function strToBytes(str) {
   else if (str.substr(-2) == 'Gb') scale = 1024*1024*1024;
   var num = str.substr(0,str.length-2).trim();
   return num*scale;
+}
+
+function prepareDate(str) {
+
+  var newStr;
+  str = str.trim();
+
+  var res = [
+    {
+      re: /^(\d+)\s?years?\s?.*$/,
+      replace: '$1 years'
+    },
+    {
+      re: /^(\d+)\s?mo\s?.*$/,
+      replace: '$1 months'
+    },
+    {
+      re: /^(\d+)\s?weeks?\s?.*$/,
+      replace: '$1 weeks'
+    },
+    {
+      re: /^(\d+)\s?d\s?.*$/,
+      replace: '$1 days'
+    },
+    {
+      re: /^(\d+)\s?h\s?.*$/,
+      replace: '$1 hours'
+    },
+    {
+      re: /^(\d+)\s?m\s?.*$/,
+      replace: '$1 minutes'
+    },
+    {
+      re: /^(\d+)\s?s\s?.*$/,
+      replace: '$1 seconds'
+    }
+  ];
+
+  newStr = res
+    .filter(function (el) {
+      return el.re.test(str);
+    })
+    .map(function ( el ) {
+      return str.replace(el.re, el.replace);
+    })[0];
+
+  if ( newStr ) {
+    str = newStr;
+  }
+
+  return date(str + ' ago');
+
 }
 
 module.exports = {};
@@ -51,13 +104,15 @@ function grabTorrents(data) {
     var mag = magnet.decode(el(".magnet").attr('href'));
     var epinfo = el(".epinfo");
     var size = epinfo.attr("title").replace(epinfo.text(), '').match(/\(([^\)]*)\)/)[1];
+    var pubDate = el(".forum_thread_post:nth-last-child(3)");
     size = strToBytes(size);
     torrents.push({
       title: el(".epinfo").text(),
       link: base + el(".epinfo").attr('href'),
       magnet: el(".magnet").attr('href'),
       hash: mag.infoHash,
-      size: size
+      size: size,
+      pubDate: prepareDate(pubDate.text())
     });
   });
   return torrents;
